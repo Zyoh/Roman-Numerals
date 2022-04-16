@@ -20,13 +20,6 @@ class RomanNumerals:
 	@classmethod
 	def dec2rom(cls, number: int, /, notation: Notation = Notation.Standard) -> str:
 		sorted_legend = sorted(cls.legend.items(), key=lambda x: x[1])
-		# These values can be used to subtract
-		# Ex. The I in IV; the X in XM
-		sorted_legend_subs = []
-		for i in sorted_legend:
-			if str(i[1])[0] == 1:
-				sorted_legend_subs.append(i)
-		
 		out = ""
 
 		while number > 0:
@@ -59,7 +52,7 @@ class RomanNumerals:
 						break
 					
 					if (v - subv) <= number:
-						delta_value = (v - subv)
+						delta_value = v - subv
 						delta_numeral = subk + k
 
 					if notation != cls.Notation.IrregularSubtractive:
