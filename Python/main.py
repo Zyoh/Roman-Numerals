@@ -1,10 +1,4 @@
-# MCCCCXXXVIIII
-# MCDXXXIX
-
-# MCDXXXVXIV
-
 from enum import Enum
-
 
 legend = {
 	"I": 1,
@@ -21,7 +15,6 @@ class RomanNumeralNotation(Enum):
 	Standard = 0
 	Additive = 1
 	IrregularSubtractive = 2
-
 
 
 def dec2rom(number: int, notation: RomanNumeralNotation):
