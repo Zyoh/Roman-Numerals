@@ -68,7 +68,7 @@ class RomanNumerals:
 	@classmethod
 	def rom2dec(cls, numerals: str) -> int:
 		total = 0
-		prev_dval = -1 # Start below minimum number
+		prev_dval = 0 # Start below minimum number
 		for digit in numerals[::-1]:
 			dval = cls.legend.get(digit)
 			if prev_dval <= dval:

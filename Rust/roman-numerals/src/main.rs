@@ -1,6 +1,10 @@
 fn main() {
-    println!("{}", rom2dec("MMMIM"));
-    println!("{}", dec2rom(3999, 0));
+    println!("MMMCMXCIX             -> {}", rom2dec("MMMCMXCIX"));
+    println!("MMMDCCCCLXXXXVIIII    -> {}", rom2dec("MMMDCCCCLXXXXVIIII"));
+    println!("MMMIM                 -> {}", rom2dec("MMMIM"));
+    println!("Standard              : {}", dec2rom(3999, RomanNumeralNotation::Standard));
+    println!("Additive              : {}", dec2rom(3999, RomanNumeralNotation::Additive));
+    println!("Irregular Subtractive : {}", dec2rom(3999, RomanNumeralNotation::IrregularSubtractive));
 }
 
 const LEGEND_KEYS_SORTED: [&str; 7] = ["I", "V", "X", "L", "C", "D", "M"];
@@ -18,11 +22,17 @@ fn legend(numeral: &str) -> Option<u32> {
     }
 }
 
+enum RomanNumeralNotation {
+    Standard,
+    Additive,
+    IrregularSubtractive
+}
+
 fn rom2dec(numerals: &str) -> u32 {
     let mut total: u32 = 0;
     let mut prev_dval: u32 = 0;
 
-    for numeral_digit in numerals.chars() {
+    for numeral_digit in numerals.chars().rev() {
         let dval: u32 = legend(&String::from(numeral_digit)).unwrap();
         if prev_dval <= dval {
             total += dval;
@@ -35,7 +45,7 @@ fn rom2dec(numerals: &str) -> u32 {
     return total;
 }
 
-fn dec2rom(mut number: u32, notation: u8) -> String {
+fn dec2rom(mut number: u32, notation: RomanNumeralNotation) -> String {
     let mut out: String = String::from("");
     
     while number > 0 {
@@ -51,7 +61,7 @@ fn dec2rom(mut number: u32, notation: u8) -> String {
             }
 
             // No subtractive numerals in Additive mode
-            if notation == 1 {
+            if matches!(notation, RomanNumeralNotation::Additive) {
                 continue;
             }
             
@@ -87,7 +97,7 @@ fn dec2rom(mut number: u32, notation: u8) -> String {
                     delta_value = Some(value - subvalue);
                 }
 
-                if notation != 2 {
+                if !matches!(notation, RomanNumeralNotation::IrregularSubtractive) {
                     break;
                 }
             }
